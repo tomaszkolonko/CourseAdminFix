@@ -146,70 +146,87 @@ class UpdateClass {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->crsArray[$crs]['AdminRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ncourseAdminRoleArray -> crsArray finished\n";
 
         // Course Admin in Groups
         foreach($this->grpArray as $grp => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->grpArray[$grp]['AdminRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ncourseAdminRoleArray -> grpArray finished\n";
 
         // Course Admin in Folders
         foreach($this->foldArray as $fold => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->foldArray[$fold]['AdminRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ncourseAdminRoleArray -> foldArray finished\n";
 
         // Course Tutor in Courses
         foreach($this->crsArray as $crs => $field) {
             foreach($this->courseTutorRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->crsArray[$crs]['TutorRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ncourseTutorRoleArray -> crsArray finished\n";
 
         // Course Tutor in Groups
         foreach($this->grpArray as $grp => $field) {
             foreach($this->courseTutorRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->grpArray[$grp]['TutorRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ncourseTutorRoleArray -> grpArray finished\n";
 
         // Course Tutor in Folders
         foreach($this->foldArray as $fold => $field) {
             foreach($this->courseTutorRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->foldArray[$fold]['TutorRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ncourseAdminRoleArray -> crsArray finished\n";
 
         foreach($this->grpArray as $grp => $field) {
             foreach($this->groupAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->grpArray[$grp]['GroupAdminRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ngroupAdminRoleArray -> grpArray finished\n";
+
 
         foreach($this->foldArray as $fold => $field) {
             foreach($this->groupAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
                     $this->foldArray[$fold]['GroupAdminRole_id'] = $role['role_id'];
+                    echo ".";
                 }
             }
         }
+        echo "\ngroupAdminRoleArray -> foldArray finished\n";
     }
 
     /**
