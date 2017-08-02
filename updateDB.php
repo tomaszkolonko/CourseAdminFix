@@ -22,7 +22,7 @@ $update = new UpdateClass();
 
 try {
     $update->findAllCoursesAndGroupsAndFolders();
-    echo " OK!";
+
 
     $update->findAllCourseAndGroupAdminRoles();
     echo " OK!";

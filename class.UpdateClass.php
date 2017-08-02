@@ -103,6 +103,10 @@ class UpdateClass {
                 echo 'unknown type in UpdateClass::findAllCoursesAndGroupsAndFolders()';
             }
         }
+        echo " OK!\n";
+        echo "\nCrsArray is: " . count($this->crsArray);
+        echo "\nGrpArray is: " . count($this->grpArray);
+        echo "\nFoldArray is: " . count($this->foldArray);
     }
 
     /**
@@ -147,7 +151,7 @@ class UpdateClass {
     public function addAdminRolesToCoursesAndGroups() {
 
         // Course Admin in Courses
-        echo "\nAdding AminRole_id to all courses: ";
+        echo "\nAdding AdminRole_id to all courses: ";
         foreach($this->crsArray as $crs => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -159,7 +163,7 @@ class UpdateClass {
         echo " OK ! \n";
 
         // Course Admin in Groups
-        echo "\nAdding AminRole_id to all groups: ";
+        echo "\nAdding AdminRole_id to all groups: ";
         foreach($this->grpArray as $grp => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -171,7 +175,7 @@ class UpdateClass {
         echo " OK ! \n";
 
         // Course Admin in Folders
-        echo "\nAdding AminRole_id to all folders: ";
+        echo "\nAdding AdminRole_id to all folders: ";
         foreach($this->foldArray as $fold => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
