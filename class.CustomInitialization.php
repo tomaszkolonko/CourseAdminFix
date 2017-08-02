@@ -16,9 +16,12 @@ class CustomInitialization {
         require_once('./Services/Context/classes/class.ilContext.php');
         require_once('./Services/Authentication/classes/class.ilAuthFactory.php');
         $il_context_auth = ilAuthFactory::CONTEXT_WEB;
-        $_COOKIE['ilClientId'] = "ilias3_unibe";
-        $_POST['username'] = "root";
-        $_POST['password'] = "homer";
+//        $_COOKIE['ilClientId'] = "ilias3_unibe";
+//        $_POST['username'] = "root";
+//        $_POST['password'] = "homer";
+        $_COOKIE['ilClientId'] = $_SERVER['argv'][3];
+        $_POST['username'] = $_SERVER['argv'][1];
+        $_POST['password'] = $_SERVER['argv'][2];
 
 
         ilAuthFactory::setContext($il_context_auth);

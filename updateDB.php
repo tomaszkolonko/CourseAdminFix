@@ -10,14 +10,14 @@
  * Time: 21:10
  */
 
-chdir(substr(__FILE__, 0, strpos(__FILE__, '/DB-Script')));
+chdir(substr(__FILE__, 0, strpos(__FILE__, '/CourseAdminFix')));
 
 
-require_once 'DB-Script/class.CustomInitialization.php';
+require_once 'CourseAdminFix/class.CustomInitialization.php';
 CustomInitialization::initILIAS();
 
 
-require_once 'DB-Script/class.UpdateClass.php';
+require_once 'CourseAdminFix/class.UpdateClass.php';
 $update = new UpdateClass();
 
 try {
