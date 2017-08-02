@@ -21,10 +21,21 @@ require_once 'DB-Script/class.UpdateClass.php';
 $update = new UpdateClass();
 
 try {
-    $update->findAllCourses();
-    $update->findAllCourseAdminRoles();
-    $update->addAdminRolesToCourses();
-    $update->getPermissionTable();
+    $update->findAllCoursesAndGroupsAndFolders();
+    echo '<pre>';
+    echo 'All courses found...';
+    $update->findAllCourseAndGroupAdminRoles();
+    echo '<pre>';
+    echo 'All Admin Roles found...';
+    $update->findAllCourseTutorRoles();
+    echo '<pre>';
+    echo 'All Tutor Roles found...';
+    $update->addAdminRolesToCoursesAndGroups();
+    echo '<pre>';
+    echo 'All Roles added...';
+    $update->updatePermissionTableForCourses();
+    $update->updatePermissionTableForGroups();
+    $update->updatePermissionTableForFolders();
 } catch (Exception $e) {
     echo $e->getMessage();
 }
