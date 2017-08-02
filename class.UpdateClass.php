@@ -247,12 +247,12 @@ class UpdateClass {
             );
 
             $counter++;
-            echo '<pre>';
+            echo "\n";
             echo($crs['title'] . " changed");
         }
 
-        echo '<pre>';
-        echo '<pre>';
+        echo "\n";
+        echo "\n";
         echo($counter . " courses have been updated (for Crs_Admin and Crs_Tutor)");
         echo("\n===========================================================");
     }
@@ -317,8 +317,8 @@ class UpdateClass {
 
         }
 
-        echo '<pre>';
-        echo '<pre>';
+        echo "\n";
+        echo "\n";
         echo($counter . " groups have been updated");
         echo("\n============================");
     }
@@ -364,8 +364,8 @@ class UpdateClass {
             echo($crs['title'] . " changed");
         }
 
-        echo '<pre>';
-        echo '<pre>';
+        echo "\n";
+        echo "\n";
         echo($counter . " folders have been updated (for Crs_Admin and Crs_Tutor)");
         echo("\n===========================================================");
     }

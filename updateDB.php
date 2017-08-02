@@ -22,17 +22,17 @@ $update = new UpdateClass();
 
 try {
     $update->findAllCoursesAndGroupsAndFolders();
-    echo '<pre>';
-    echo 'All courses found...';
+    echo "\nAll courses found...";
+
     $update->findAllCourseAndGroupAdminRoles();
-    echo '<pre>';
-    echo 'All Admin Roles found...';
+    echo "\nAll Admin Roles found...";
+
     $update->findAllCourseTutorRoles();
-    echo '<pre>';
-    echo 'All Tutor Roles found...';
+    echo "\nAll Tutor Roles found...";
+
     $update->addAdminRolesToCoursesAndGroups();
-    echo '<pre>';
-    echo 'All Roles added...';
+    echo "\nAll Roles added...\n\n";
+
     $update->updatePermissionTableForCourses();
     $update->updatePermissionTableForGroups();
     $update->updatePermissionTableForFolders();
