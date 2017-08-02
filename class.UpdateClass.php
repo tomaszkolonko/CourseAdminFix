@@ -88,6 +88,7 @@ class UpdateClass {
      * Find all Courses with obj_id and ref_id and put them into an array: $this->crsArray.
      */
     public function findAllCoursesAndGroupsAndFolders() {
+        echo "\nCollecting information about courses, groups and folders... ";
 
         $set = $this->db->query('SELECT * FROM object_data INNER JOIN object_reference ON object_data.obj_id = object_reference.obj_id WHERE type="crs" OR type="grp" OR type="fold"');
 
@@ -108,6 +109,8 @@ class UpdateClass {
      * Find all course and group admin roles and put them into an their array respectively
      */
     public function findAllCourseAndGroupAdminRoles() {
+        echo "\nCollecting information about Admin Roles... ";
+
         $set = $this->db->query('SELECT * FROM object_data WHERE type="role" AND title LIKE "il_crs_admin_%" OR title LIKE "il_grp_admin_%"');
 
         while ($rec = $this->db->fetchAssoc($set)) {
@@ -125,6 +128,8 @@ class UpdateClass {
      * Find all course tutor roles and put them into the tutor array
      */
     public function findAllCourseTutorRoles() {
+        echo "\nCollecting information about Tutor Roles... ";
+
         $set = $this->db->query('SELECT * FROM object_data WHERE type="role" AND title LIKE "il_crs_tutor_%"');
 
         while ($rec = $this->db->fetchAssoc($set)) {
@@ -142,6 +147,7 @@ class UpdateClass {
     public function addAdminRolesToCoursesAndGroups() {
 
         // Course Admin in Courses
+        echo "\nAdding AminRole_id to all courses: ";
         foreach($this->crsArray as $crs => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -150,9 +156,10 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ncourseAdminRoleArray -> crsArray finished\n";
+        echo " OK ! \n";
 
         // Course Admin in Groups
+        echo "\nAdding AminRole_id to all groups: ";
         foreach($this->grpArray as $grp => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -161,9 +168,10 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ncourseAdminRoleArray -> grpArray finished\n";
+        echo " OK ! \n";
 
         // Course Admin in Folders
+        echo "\nAdding AminRole_id to all folders: ";
         foreach($this->foldArray as $fold => $field) {
             foreach($this->courseAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -172,9 +180,10 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ncourseAdminRoleArray -> foldArray finished\n";
+        echo " OK ! \n";
 
         // Course Tutor in Courses
+        echo "\nAdding TutorRole_id to all courses: ";
         foreach($this->crsArray as $crs => $field) {
             foreach($this->courseTutorRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -183,9 +192,10 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ncourseTutorRoleArray -> crsArray finished\n";
+        echo " OK ! \n";
 
         // Course Tutor in Groups
+        echo "\nAdding TutorRole_id to all groups: ";
         foreach($this->grpArray as $grp => $field) {
             foreach($this->courseTutorRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -194,9 +204,10 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ncourseTutorRoleArray -> grpArray finished\n";
+        echo " OK ! \n";
 
         // Course Tutor in Folders
+        echo "\nAdding TutorRole_id to all folders: ";
         foreach($this->foldArray as $fold => $field) {
             foreach($this->courseTutorRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -205,8 +216,9 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ncourseAdminRoleArray -> crsArray finished\n";
+        echo " OK ! \n";
 
+        echo "\nAdding GroupAdminRole_id to all groups: ";
         foreach($this->grpArray as $grp => $field) {
             foreach($this->groupAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -215,9 +227,9 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ngroupAdminRoleArray -> grpArray finished\n";
+        echo " OK ! \n";
 
-
+        echo "\nAdding GroupAdminRole_id to all folders: ";
         foreach($this->foldArray as $fold => $field) {
             foreach($this->groupAdminRoleArray as $role) {
                 if($field['obj_id'] == (int)substr($role['description'], strpos($role['description'], ".") + 1)) {
@@ -226,7 +238,7 @@ class UpdateClass {
                 }
             }
         }
-        echo "\ngroupAdminRoleArray -> foldArray finished\n";
+        echo " OK ! \n";
     }
 
     /**
