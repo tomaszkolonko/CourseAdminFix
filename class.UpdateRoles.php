@@ -17,25 +17,19 @@ require_once 'CourseAdminFix/class.CustomInitialization.php';
 CustomInitialization::initILIAS();
 
 
-require_once 'CourseAdminFix/class.UpdateClass.php';
-$update = new UpdateClass();
+require_once 'CourseAdminFix/class.UpdateRolesClass.php';
+$update = new UpdateRolesClass();
 
 try {
-    $update->findAllCoursesAndGroupsAndFolders();
+    $update->findAllCourseAdminsAndTutors();
 
 
-    $update->findAllCourseAndGroupAdminRoles();
-    echo " OK!";
+    $update->findAllGroupAdminsAndTutors();
 
-    $update->findAllCourseTutorRoles();
-    echo " OK!";
 
-    $update->addAdminRolesToCoursesAndGroups();
-    echo " OK!";
+    $update->findAllFoldersAndRoles();
 
-    $update->updatePermissionTableForCourses();
-    $update->updatePermissionTableForGroups();
-    $update->updatePermissionTableForFolders();
+
 } catch (Exception $e) {
     echo $e->getMessage();
 }
