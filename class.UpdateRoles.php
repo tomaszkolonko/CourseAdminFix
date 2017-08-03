@@ -10,21 +10,26 @@
  * Time: 21:10
  */
 
-chdir(substr(__FILE__, 0, strpos(__FILE__, '/DB-Script')));
+chdir(substr(__FILE__, 0, strpos(__FILE__, '/CourseAdminFix')));
 
 
-require_once 'DB-Script/class.CustomInitialization.php';
+require_once 'CourseAdminFix/class.CustomInitialization.php';
 CustomInitialization::initILIAS();
 
 
-require_once 'DB-Script/class.UpdateClass.php';
-$update = new UpdateClass();
+require_once 'CourseAdminFix/class.UpdateRolesClass.php';
+$update = new UpdateRolesClass();
 
 try {
-    $update->findAllCourses();
-    $update->findAllCourseAdminRoles();
-    $update->addAdminRolesToCourses();
-    $update->getPermissionTable();
+    $update->findAllCourseAdminsAndTutors();
+
+
+    $update->findAllGroupAdminsAndTutors();
+
+
+    $update->findAllFoldersAndRoles();
+
+
 } catch (Exception $e) {
     echo $e->getMessage();
 }
