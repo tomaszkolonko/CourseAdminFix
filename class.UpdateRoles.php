@@ -16,12 +16,11 @@ chdir(substr(__FILE__, 0, strpos(__FILE__, '/CourseAdminFix')));
 require_once 'CourseAdminFix/class.CustomInitialization.php';
 CustomInitialization::initILIAS();
 
-
 require_once 'CourseAdminFix/class.UpdateRolesClass.php';
 $update = new UpdateRolesClass();
 
 try {
-    $update->findAllCourseAdminsAndTutors();
+    $update->findAllCourseAdminsTutorsMembers();
 
 
     $update->findAllGroupAdminsAndTutors();
