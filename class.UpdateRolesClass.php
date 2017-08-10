@@ -277,7 +277,7 @@ class UpdateRolesClass {
 
     public function updateAllMemberTemplates($rec) {
         $this->memberRoleArray = array();
-        if(substr($rec['title'], 0, 10) == "il_grp_mem") {
+        if(substr($rec['role_title'], 0, 10) == "il_grp_mem") {
             $this->memberRoleArray = array($this->getIsVisible(), $this->getRead(), $this->getUpload());
         } else {
             $this->memberRoleArray = array($this->getIsVisible(), $this->getRead());
