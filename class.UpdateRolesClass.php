@@ -67,7 +67,25 @@ class UpdateRolesClass {
      * @var String $type
      */
     protected $type;
+    /**
+     * @var array $courseAdminRoleArray
+     */
+    protected $courseAdminRoleArray;
 
+    /**
+     * @var array $courseTutorRoleArray
+     */
+    protected $courseTutorRoleArray;
+
+    /**
+     * @var array $courseMemberRoleArray
+     */
+    protected $courseMemberRoleArray;
+
+    /**
+     * @var array $groupMemberRoleArray
+     */
+    protected $groupMemberRoleArray;
 
 
     /**
@@ -84,6 +102,7 @@ class UpdateRolesClass {
         require_once('./CourseAdminFix/class.UpdateRolesLog.php');
         $this->log = UpdateRolesLog::getInstance();
 
+        // Retrieve id of all needed permissions
         $this->setEditPermission();
         $this->setIsVisible();
         $this->setRead();
@@ -91,6 +110,11 @@ class UpdateRolesClass {
         $this->setDelete();
         $this->setUpload();
         $this->setEditVideos();
+
+        $this->setCourseTutorRoleArray();
+        $this->setCourseAdminRoleArray();
+        $this->setCourseMemberRoleArray();
+        $this->setGroupMemberRoleArray();
 
         $this->setType("xoct");
 
@@ -195,7 +219,7 @@ class UpdateRolesClass {
      */
     public function updatePermissionTable($rec) {
         $this->log->write("changing: " . print_r($rec['role_title'],true) . " role_id: " . print_r($rec['role_id'],true) .
-                                " and ref_id: " . print_r($rec['ref_id'],true));
+            " and ref_id: " . print_r($rec['ref_id'],true));
 
         $old_ops = $this->rbac_review->getRoleOperationsOnObject(
             $rec['role_id'],
@@ -216,16 +240,14 @@ class UpdateRolesClass {
         );
 
         $this->counter++;
-
-
     }
 
     public function updateRoleTemplatesAdminTutorAndMember($rec) {
         if(substr($rec['role_title'], 0, 10) == "il_crs_adm" || substr($rec['role_title'], 0, 10) == "il_grp_adm") {
-            $this->updateAllCourseAdminTemplates($rec);
+            $this->changeTemplates($rec, $this->getCourseAdminRoleArray());
             $this->log->write("admin template set !!!");
         } else if(substr($rec['role_title'], 0, 10) == "il_crs_tut") {
-            $this->updateAllCourseTutorTemplates($rec);
+            $this->changeTemplates($rec, $this->getCourseTutorRoleArray());
             $this->log->write("tutor template set !!!");
         } else if(substr($rec['role_title'], 0, 10) == "il_crs_mem") {
             $this->updateAllMemberTemplates($rec);
@@ -233,67 +255,26 @@ class UpdateRolesClass {
         }
     }
 
-    public function updateAllCourseAdminTemplates($rec) {
-        $courseAdminRoleArray = array($this->getEditPermission(), $this->getIsVisible(), $this->getRead(), $this->getWrite(),
-            $this->getDelete(), $this->getUpload(), $this->getEditVideos());
-
-        foreach($courseAdminRoleArray as $adminRole) {
-            $set = $this->db->query('SELECT rol_id, type, ops_id, parent FROM rbac_templates
-              WHERE rol_id=' . "'" . $rec['role_id'] . "'" . 'AND type="xoct"
-              AND ops_id=' . "'" . $adminRole . "'" . 'AND parent=' . "'" . $rec['roles_parent_ref_id'] . "'");
-            if(!$this->db->fetchAssoc($set)) {
-                $query = 'INSERT INTO rbac_templates (rol_id,type,ops_id,parent) '.
-                    'VALUES( '.
-                    $this->db->quote($rec['role_id'],'integer').', '.
-                    $this->db->quote($this->getType(),'text').', '.
-                    $this->db->quote($adminRole,'integer').', '.
-                    $this->db->quote($rec['roles_parent_ref_id'],'integer').' '.
-                    ')';
-                $this->db->manipulate($query);
-            }
-        }
-    }
-
-    public function updateAllCourseTutorTemplates($rec) {
-        $courseTutorRoleArray = array($this->getIsVisible(), $this->getRead(), $this->getWrite(),
-            $this->getUpload(), $this->getEditVideos());
-
-        foreach($courseTutorRoleArray as $tutorRole) {
-            $set = $this->db->query('SELECT rol_id, type, ops_id, parent FROM rbac_templates
-              WHERE rol_id=' . "'" . $rec['role_id'] . "'" . 'AND type="xoct"
-              AND ops_id=' . "'" . $tutorRole . "'" . 'AND parent=' . "'" . $rec['roles_parent_ref_id'] . "'");
-            if(!$this->db->fetchAssoc($set)) {
-                $query = 'INSERT INTO rbac_templates (rol_id,type,ops_id,parent) '.
-                    'VALUES( '.
-                    $this->db->quote($rec['role_id'],'integer').', '.
-                    $this->db->quote($this->getType(),'text').', '.
-                    $this->db->quote($tutorRole,'integer').', '.
-                    $this->db->quote($rec['roles_parent_ref_id'],'integer').' '.
-                    ')';
-                $this->db->manipulate($query);
-            }
-        }
-    }
-
     public function updateAllMemberTemplates($rec) {
         $this->memberRoleArray = array();
-        if(substr($rec['title'], 0, 10) == "il_grp_mem") {
-            $this->memberRoleArray = array($this->getIsVisible(), $this->getRead(), $this->getUpload());
+        if(substr($rec['role_title'], 0, 10) == "il_grp_mem") {
+            $this->changeTemplates($rec, $this->getGroupMemberRoleArray());
         } else {
-            $this->memberRoleArray = array($this->getIsVisible(), $this->getRead());
+            $this->changeTemplates($rec, $this->getCourseMemberRoleArray());
         }
+    }
 
-
-        foreach($this->memberRoleArray as $memberRole) {
+    public function changeTemplates($rec, $courseAdminRoleArray) {
+        foreach($courseAdminRoleArray as $roleTemplate) {
             $set = $this->db->query('SELECT rol_id, type, ops_id, parent FROM rbac_templates
               WHERE rol_id=' . "'" . $rec['role_id'] . "'" . 'AND type="xoct"
-              AND ops_id=' . "'" . $memberRole . "'" . 'AND parent=' . "'" . $rec['roles_parent_ref_id'] . "'");
+              AND ops_id=' . "'" . $roleTemplate . "'" . 'AND parent=' . "'" . $rec['roles_parent_ref_id'] . "'");
             if(!$this->db->fetchAssoc($set)) {
                 $query = 'INSERT INTO rbac_templates (rol_id,type,ops_id,parent) '.
                     'VALUES( '.
                     $this->db->quote($rec['role_id'],'integer').', '.
                     $this->db->quote($this->getType(),'text').', '.
-                    $this->db->quote($memberRole,'integer').', '.
+                    $this->db->quote($roleTemplate,'integer').', '.
                     $this->db->quote($rec['roles_parent_ref_id'],'integer').' '.
                     ')';
                 $this->db->manipulate($query);
@@ -368,5 +349,40 @@ class UpdateRolesClass {
         return $this->type;
     }
 
+
+
+    public function setCourseAdminRoleArray() {
+        $this->courseAdminRoleArray = array($this->getEditPermission(), $this->getIsVisible(), $this->getRead(), $this->getWrite(),
+            $this->getDelete(), $this->getUpload(), $this->getEditVideos());
+    }
+
+    public function getCourseAdminRoleArray() {
+        return $this->courseAdminRoleArray;
+    }
+
+    public function setCourseTutorRoleArray() {
+        $this->courseTutorRoleArray = array($this->getIsVisible(), $this->getRead(), $this->getWrite(),
+            $this->getUpload(), $this->getEditVideos());
+    }
+
+    public function getCourseTutorRoleArray() {
+        return $this->courseTutorRoleArray;
+    }
+
+    public function setCourseMemberRoleArray() {
+        $this->courseMemberRoleArray = array($this->getIsVisible(), $this->getRead());
+    }
+
+    public function getCourseMemberRoleArray() {
+        return $this->courseMemberRoleArray;
+    }
+
+    public function setGroupMemberRoleArray() {
+        $this->groupMemberRoleArray = array($this->getIsVisible(), $this->getRead(), $this->getUpload());
+    }
+
+    public function getGroupMemberRoleArray() {
+        return $this->groupMemberRoleArray;
+    }
+
 }
-?>
